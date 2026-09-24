@@ -8,7 +8,6 @@ import { ImpactMetrics } from './components/ImpactMetrics';
 import { BaytifyInside } from './components/BaytifyInside';
 import { Endorsements } from './components/Endorsements';
 import { Footer } from './components/Footer';
-import { WorkWithMeModal } from './components/WorkWithMeModal';
 import { ExecutiveBioModal } from './components/ExecutiveBioModal';
 import { BlogsPage } from './components/BlogsPage';
 
@@ -16,7 +15,6 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'blogs'>(() => {
     return window.location.hash.startsWith('#blog') ? 'blogs' : 'home';
   });
-  const [workModalOpen, setWorkModalOpen] = useState(false);
   const [bioModalOpen, setBioModalOpen] = useState(false);
 
   useEffect(() => {
@@ -33,6 +31,11 @@ export default function App() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  // "Work With Me" / "Contact" buttons open the visitor's email app directly (no pop-up)
+  const openContactEmail = () => {
+    window.location.href = `mailto:emma@baytify.com?subject=${encodeURIComponent('Inquiry from Emma King website')}`;
+  };
 
   const handleNavigate = (page: 'home' | 'blogs', sectionId?: string) => {
     setCurrentPage(page);
@@ -63,7 +66,7 @@ export default function App() {
       <Navbar
         currentPage={currentPage}
         onNavigate={handleNavigate}
-        onOpenWorkModal={() => setWorkModalOpen(true)}
+        onOpenWorkModal={openContactEmail}
         onOpenBioModal={() => setBioModalOpen(true)}
       />
 
@@ -72,16 +75,16 @@ export default function App() {
         {currentPage === 'blogs' ? (
           <BlogsPage
             onBackToHome={() => handleNavigate('home')}
-            onOpenWorkModal={() => setWorkModalOpen(true)}
+            onOpenWorkModal={openContactEmail}
           />
         ) : (
           <>
-            <Hero onOpenWorkModal={() => setWorkModalOpen(true)} />
+            <Hero onOpenWorkModal={openContactEmail} />
             <AboutStory />
             <CareerTimeline />
-            <PillarsOfPractice onOpenWorkModal={() => setWorkModalOpen(true)} />
+            <PillarsOfPractice onOpenWorkModal={openContactEmail} />
             <ImpactMetrics />
-            <BaytifyInside onOpenWorkModal={() => setWorkModalOpen(true)} />
+            <BaytifyInside onOpenWorkModal={openContactEmail} />
             <Endorsements />
           </>
         )}
@@ -90,15 +93,11 @@ export default function App() {
       {/* Footer */}
       <Footer
         onNavigate={handleNavigate}
-        onOpenWorkModal={() => setWorkModalOpen(true)}
+        onOpenWorkModal={openContactEmail}
         onOpenBioModal={() => setBioModalOpen(true)}
       />
 
       {/* Interactive Modals */}
-      <WorkWithMeModal
-        isOpen={workModalOpen}
-        onClose={() => setWorkModalOpen(false)}
-      />
       <ExecutiveBioModal
         isOpen={bioModalOpen}
         onClose={() => setBioModalOpen(false)}
