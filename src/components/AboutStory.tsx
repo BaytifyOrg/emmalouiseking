@@ -1,48 +1,11 @@
-import { useState, useRef, ChangeEvent, MouseEvent } from 'react';
-import { Quote, BookOpen, Target, CheckCircle2, ChevronDown, ChevronUp, Camera, RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+import { Quote, BookOpen, Target, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import { ABOUT_STORY } from '../data';
 import { ASSETS } from '../assets';
 
 export const AboutStory = () => {
   const [activeTab, setActiveTab] = useState<'narrative' | 'principles'>('narrative');
   const [isExpanded, setIsExpanded] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [storyImage, setStoryImage] = useState<string>(() => {
-    return localStorage.getItem('emma_story_image') || ASSETS.storyImage;
-  });
-  const [hasCustomImage, setHasCustomImage] = useState<boolean>(() => {
-    return !!localStorage.getItem('emma_story_image');
-  });
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setStoryImage(reader.result);
-          setHasCustomImage(true);
-          try {
-            localStorage.setItem('emma_story_image', reader.result);
-          } catch {
-            // Quota might be exceeded for massive base64, state still holds it
-          }
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleResetImage = (e: MouseEvent) => {
-    e.stopPropagation();
-    setStoryImage(ASSETS.storyImage);
-    setHasCustomImage(false);
-    localStorage.removeItem('emma_story_image');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
   return (
     <section id="story" className="py-20 lg:py-28 bg-[#F4EFEA] border-y border-[#E8DFC0]/40 relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -164,43 +127,13 @@ export const AboutStory = () => {
             
             {/* Visual Card with Dubai Skyline & Baytify Context */}
             <div className="relative rounded-xl overflow-hidden border border-[#E0D5C3] shadow-md group">
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
               
               <img
-                src={storyImage}
+                src={ASSETS.storyImage}
                 alt="Dubai Real Estate Architecture"
                 className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
-
-              {/* Upload image button on the card */}
-              <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-black/60 hover:bg-black/85 text-white text-[11px] font-medium backdrop-blur-xs border border-white/20 transition-all shadow-xs cursor-pointer"
-                  title="Upload individual photo for My Story"
-                >
-                  <Camera className="w-3.5 h-3.5 text-[#D8C7B0]" />
-                  <span>{hasCustomImage ? "Change Photo" : "Upload Photo"}</span>
-                </button>
-                {hasCustomImage && (
-                  <button
-                    type="button"
-                    onClick={handleResetImage}
-                    className="p-1.5 rounded-md bg-black/60 hover:bg-black/85 text-white/80 hover:text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
-                    title="Reset to default image"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#14171C]/90 via-[#14171C]/30 to-transparent p-5 flex flex-col justify-end text-white">
                 <span className="text-[11px] uppercase tracking-wider text-[#D8C7B0] font-semibold">

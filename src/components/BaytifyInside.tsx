@@ -1,5 +1,4 @@
-import { useState, useRef, ChangeEvent, MouseEvent } from 'react';
-import { Building2, Sparkles, CheckCircle2, ArrowRight, Camera, RotateCcw } from 'lucide-react';
+import { Building2, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 import { ASSETS } from '../assets';
 
 interface BaytifyInsideProps {
@@ -7,43 +6,6 @@ interface BaytifyInsideProps {
 }
 
 export const BaytifyInside = ({ onOpenWorkModal }: BaytifyInsideProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [baytifyImage, setBaytifyImage] = useState<string>(() => {
-    return localStorage.getItem('emma_baytify_image') || ASSETS.baytifyImage;
-  });
-  const [hasCustomImage, setHasCustomImage] = useState<boolean>(() => {
-    return !!localStorage.getItem('emma_baytify_image');
-  });
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setBaytifyImage(reader.result);
-          setHasCustomImage(true);
-          try {
-            localStorage.setItem('emma_baytify_image', reader.result);
-          } catch {
-            // Quota might be exceeded for massive base64, state still holds it
-          }
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleResetImage = (e: MouseEvent) => {
-    e.stopPropagation();
-    setBaytifyImage(ASSETS.baytifyImage);
-    setHasCustomImage(false);
-    localStorage.removeItem('emma_baytify_image');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
   return (
     <section id="baytify" className="py-20 lg:py-28 bg-[#1E232A] text-white relative overflow-hidden">
       {/* Subtle architectural overlay */}
@@ -117,43 +79,13 @@ export const BaytifyInside = ({ onOpenWorkModal }: BaytifyInsideProps) => {
           {/* Right Column: Visual Frame */}
           <div className="lg:col-span-5 relative group">
             <div className="relative rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#282E37]">
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
 
               <img
-                src={baytifyImage}
+                src={ASSETS.baytifyImage}
                 alt="Baytify Real Estate Dubai"
                 className="w-full h-80 sm:h-96 object-cover opacity-85 transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
-
-              {/* Individual Image Upload Button for Baytify section */}
-              <div className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-black/65 hover:bg-black/85 text-white text-xs font-medium backdrop-blur-xs border border-white/20 transition-all shadow-xs cursor-pointer"
-                  title="Upload individual photo for Baytify section"
-                >
-                  <Camera className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span>{hasCustomImage ? "Change Photo" : "Upload Photo"}</span>
-                </button>
-                {hasCustomImage && (
-                  <button
-                    type="button"
-                    onClick={handleResetImage}
-                    className="p-1.5 rounded-md bg-black/65 hover:bg-black/85 text-white/80 hover:text-white backdrop-blur-xs border border-white/20 transition-all cursor-pointer"
-                    title="Reset to default image"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#14171C] via-[#14171C]/50 to-transparent p-7 flex flex-col justify-end">
                 <div className="flex items-center gap-2 text-xs text-[#D4AF37] font-semibold tracking-wider uppercase mb-1">

@@ -1,6 +1,6 @@
 import { Milestone, PerformancePillar, StatMetric, Endorsement } from './types';
 
-export const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/emma-k-2a00a9122/?lipi=urn%3Ali%3Apage%3Aorganization_admin_admin_settings_manage_admins%3B3b938ffb-61bb-4d6e-97ac-de94304a1ab2";
+export const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/emma-k-2a00a9122/";
 export const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/emma_baytify/";
 export const BAYTIFY_WEBSITE_URL = "https://www.baytify.com/";
 export const BAYTIFY_MAPS_URL = "https://maps.app.goo.gl/9iA6xQ8Eq72ZihTZ6";

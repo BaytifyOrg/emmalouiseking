@@ -1,5 +1,5 @@
-import { useState, useRef, type FormEvent, type DragEvent, type ChangeEvent, type MouseEvent } from 'react';
-import { X, Send, CheckCircle2, Linkedin, Mail, UploadCloud, FileText, Trash2 } from 'lucide-react';
+import { useState, type FormEvent } from 'react';
+import { X, Send, CheckCircle2, Linkedin, Mail, Paperclip } from 'lucide-react';
 import { LINKEDIN_PROFILE_URL } from '../data';
 
 interface WorkWithMeModalProps {
@@ -13,49 +13,9 @@ export const WorkWithMeModal = ({ isOpen, onClose }: WorkWithMeModalProps) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
-  const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  if (!isOpen) return null;
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setPortfolioFile(e.target.files[0]);
-    }
-  };
-
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setPortfolioFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const removeFile = (e: MouseEvent) => {
-    e.stopPropagation();
-    setPortfolioFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
+  const mailtoHref = `mailto:emma@baytify.com?subject=${encodeURIComponent('Inquiry from Emma King website')}&body=${encodeURIComponent(
+    `Hello Emma,\n\nMy name is ${name}.\nPhone: ${phone}\nEmail: ${email}\n\n${message}`
+  )}`;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -68,10 +28,6 @@ export const WorkWithMeModal = ({ isOpen, onClose }: WorkWithMeModalProps) => {
     setEmail('');
     setPhone('');
     setMessage('');
-    setPortfolioFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
     onClose();
   };
 
@@ -148,65 +104,12 @@ export const WorkWithMeModal = ({ isOpen, onClose }: WorkWithMeModalProps) => {
                 </div>
               </div>
 
-              {/* Minimized CV / Portfolio Upload Box */}
-              <div>
-                <label className="block text-xs font-semibold text-[#3D352B] mb-1">
-                  Attach CV / Resume <span className="font-normal text-[#7A6F60] text-[11px]">(Optional · PDF, DOC, max 15MB)</span>
-                </label>
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="portfolio-upload-input"
-                />
-
-                {!portfolioFile ? (
-                  <div
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`border border-dashed rounded-lg px-3.5 py-2 flex items-center justify-between cursor-pointer transition-all ${
-                      isDragging
-                        ? 'border-[#9C7A4A] bg-[#F5EFE6]'
-                        : 'border-[#D8CEBF] hover:border-[#9C7A4A] bg-[#FAF8F5]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 text-xs text-[#50483E] truncate">
-                      <UploadCloud className="w-4 h-4 text-[#9C7A4A] shrink-0" />
-                      <span className="truncate">
-                        <span className="font-medium text-[#1E232A]">Upload CV/Resume</span>
-                        <span className="text-[#7A6F60] ml-1.5 hidden sm:inline">or drag & drop</span>
-                      </span>
-                    </div>
-                    <span className="text-[11px] font-semibold text-[#9C7A4A] hover:text-[#7A5D33] shrink-0 ml-2">
-                      Browse
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between px-3 py-2 rounded-lg border border-[#9C7A4A]/40 bg-[#FAF6F0]">
-                    <div className="flex items-center gap-2 overflow-hidden">
-                      <FileText className="w-4 h-4 text-[#9C7A4A] shrink-0" />
-                      <span className="text-xs font-semibold text-[#1E232A] truncate">
-                        {portfolioFile.name}
-                      </span>
-                      <span className="text-[11px] text-[#7A6F60] shrink-0">
-                        ({formatFileSize(portfolioFile.size)})
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={removeFile}
-                      className="p-1 rounded text-[#7A6F60] hover:text-[#B91C1C] hover:bg-white/80 transition-colors ml-2 shrink-0 cursor-pointer"
-                      title="Remove file"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                )}
+              {/* CV note: attachments are added in the visitor's email app */}
+              <div className="flex items-start gap-2 px-3.5 py-2.5 rounded-lg border border-dashed border-[#D8CEBF] bg-[#FAF8F5] text-[11px] sm:text-xs text-[#50483E]">
+                <Paperclip className="w-4 h-4 text-[#9C7A4A] shrink-0 mt-px" />
+                <span>
+                  <span className="font-semibold text-[#1E232A]">Sharing a CV?</span> Your email app opens in the next step. Attach your CV there before sending.
+                </span>
               </div>
 
               {/* Message */}
@@ -245,12 +148,12 @@ export const WorkWithMeModal = ({ isOpen, onClose }: WorkWithMeModalProps) => {
               Inquiry Prepared
             </h3>
             <p className="text-xs sm:text-sm text-[#665B4D] max-w-md mx-auto leading-relaxed">
-              Thank you, <span className="font-semibold text-[#1E232A]">{name || 'there'}</span>. Your message{portfolioFile ? ` and CV document (${portfolioFile.name})` : ''} have been drafted for Emma Louise King.
+              Thank you, <span className="font-semibold text-[#1E232A]">{name || 'there'}</span>. Your message has been drafted for Emma Louise King. Click below to open it in your email app and send it (attach your CV there if you'd like to share one).
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
-                href={`mailto:emma@baytify.com?subject=Inquiry from Emma King Portfolio&body=Hello Emma,%0D%0A%0D%0AMy name is ${encodeURIComponent(name)}.%0D%0APhone: ${encodeURIComponent(phone)}%0D%0AEmail: ${encodeURIComponent(email)}${portfolioFile ? `%0D%0A[CV / Portfolio Attached: ${encodeURIComponent(portfolioFile.name)}]` : ''}%0D%0A%0D%0A${encodeURIComponent(message)}`}
+                href={mailtoHref}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#1E232A] text-white text-xs font-semibold hover:bg-[#9C7A4A] transition-all"
               >
                 <Mail className="w-3.5 h-3.5" />
