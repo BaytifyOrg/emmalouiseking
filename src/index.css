@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'The Season Regular';
+  src: url('/fonts/the-seasons-regular.woff2') format('woff2'),
+       url('/fonts/the-seasons-regular.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/9366bd460113d8bf675fd2bdfe1ce764.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Season';
+  src: url('/fonts/the-seasons-regular.woff2') format('woff2'),
+       url('/fonts/the-seasons-regular.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/9366bd460113d8bf675fd2bdfe1ce764.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Seasons';
+  src: url('/fonts/the-seasons-regular.woff2') format('woff2'),
+       url('/fonts/the-seasons-regular.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/9366bd460113d8bf675fd2bdfe1ce764.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-primary-title: 'The Season Regular', 'The Season', 'The Seasons', Georgia, serif;
+  --font-serif: 'The Season Regular', 'The Season', 'The Seasons', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: #1a1e24;
+  background-color: #faf8f5;
+}
+
+/* Primary Website Title & Heading Fonts */
+h1, h2, h3, .font-editorial, .font-title {
+  font-family: var(--font-primary-title) !important;
+}
+
+.font-body {
+  font-family: var(--font-sans);
+}
