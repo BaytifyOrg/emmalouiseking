@@ -53,3 +53,27 @@ export interface BlogPost {
   tags: string[];
   keyTakeaways?: string[];
 }
+
+export type Page = 'home' | 'blogs' | 'careers' | 'partners' | 'intro';
+
+export type Audience = 'corporate' | 'developer' | 'brokerage' | 'candidate' | 'other';
+
+export interface Role {
+  slug: string;
+  title: string;
+  team: string | null;
+  location: string | null;
+  employment_type: string | null;
+  summary: string | null;
+  highlights: string[] | null;
+  requirements: string[] | null;
+}
+
+export interface IntroLink {
+  slug: string;
+  company: string;
+  contact_name: string | null;
+  audience: Exclude<Audience, 'other'>;
+  headline: string | null;
+  message: string | null;
+}

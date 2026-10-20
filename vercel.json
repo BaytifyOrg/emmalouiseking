@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/careers", "destination": "/index.html" },
+    { "source": "/careers/:slug", "destination": "/index.html" },
+    { "source": "/partners", "destination": "/index.html" },
+    { "source": "/partner", "destination": "/index.html" },
+    { "source": "/intro/:slug", "destination": "/index.html" }
+  ]
+}

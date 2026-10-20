@@ -63,7 +63,7 @@ export const BaytifyInside = ({ onOpenWorkModal }: BaytifyInsideProps) => {
                 onClick={onOpenWorkModal}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-[#9C7A4A] hover:bg-[#b08b56] text-white text-xs sm:text-sm font-semibold transition-all shadow-md cursor-pointer"
               >
-                <span>Connect with Baytify Team</span>
+                <span>Join Baytify's team</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 

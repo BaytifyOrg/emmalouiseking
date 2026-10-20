@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, FileText, ArrowUpRight } from 'lucide-react';
+import type { Page } from '../types';
 
 interface NavbarProps {
   onOpenWorkModal: () => void;
   onOpenBioModal: () => void;
-  currentPage?: 'home' | 'blogs';
-  onNavigate?: (page: 'home' | 'blogs', sectionId?: string) => void;
+  currentPage?: Page;
+  onNavigate?: (page: Page, sectionId?: string) => void;
 }
 
 export const Navbar = ({ 
@@ -25,16 +26,23 @@ export const Navbar = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
+  const navLinks: { name: string; sectionId?: string; isBlogPage?: boolean; page?: Page }[] = [
     { name: 'My Story', sectionId: 'story' },
-    { name: 'Career Timeline', sectionId: 'timeline' },
-    { name: 'Pillars & Practice', sectionId: 'pillars' },
     { name: 'Track Record', sectionId: 'metrics' },
+    { name: 'Careers', page: 'careers' },
+    { name: 'Partner with Baytify', page: 'partners' },
     { name: 'Blogs', isBlogPage: true },
   ];
 
+  const isActiveLink = (link: typeof navLinks[0]) =>
+    (link.isBlogPage && currentPage === 'blogs') || (!!link.page && link.page === currentPage);
+
   const handleLinkClick = (link: typeof navLinks[0]) => {
     setMobileMenuOpen(false);
+    if (link.page) {
+      if (onNavigate) onNavigate(link.page);
+      return;
+    }
     if (link.isBlogPage) {
       if (onNavigate) {
         onNavigate('blogs');
@@ -54,7 +62,7 @@ export const Navbar = ({
     <header
       id="main-navbar"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || currentPage === 'blogs'
+        scrolled || currentPage !== 'home'
           ? 'bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#E8E1D5] shadow-xs py-3.5'
           : 'bg-transparent py-5'
       }`}
@@ -76,7 +84,7 @@ export const Navbar = ({
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-7">
           {navLinks.map((link) => {
-            const isActive = link.isBlogPage && currentPage === 'blogs';
+            const isActive = isActiveLink(link);
             return (
               <button
                 key={link.name}
@@ -132,7 +140,7 @@ export const Navbar = ({
                 key={link.name}
                 onClick={() => handleLinkClick(link)}
                 className={`text-base font-medium text-left transition-colors py-1 cursor-pointer ${
-                  link.isBlogPage && currentPage === 'blogs'
+                  isActiveLink(link)
                     ? 'text-[#9C7A4A] font-semibold'
                     : 'text-[#3A332B] hover:text-[#9C7A4A]'
                 }`}

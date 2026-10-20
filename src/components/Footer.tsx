@@ -1,10 +1,11 @@
 import { Linkedin, Instagram, Building2, MapPin, ArrowUp } from 'lucide-react';
+import type { Page } from '../types';
 import { LINKEDIN_PROFILE_URL, INSTAGRAM_PROFILE_URL, BAYTIFY_WEBSITE_URL, BAYTIFY_MAPS_URL } from '../data';
 
 interface FooterProps {
   onOpenWorkModal: () => void;
   onOpenBioModal?: () => void;
-  onNavigate?: (page: 'home' | 'blogs', sectionId?: string) => void;
+  onNavigate?: (page: Page, sectionId?: string) => void;
 }
 
 export const Footer = ({ onOpenWorkModal, onNavigate }: FooterProps) => {
@@ -105,6 +106,16 @@ export const Footer = ({ onOpenWorkModal, onNavigate }: FooterProps) => {
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigate?.('careers')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Careers at Baytify
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate?.('partners')} className="hover:text-white transition-colors cursor-pointer text-left">
+                  Partner with Baytify
+                </button>
+              </li>
+              <li>
                 <button 
                   onClick={() => handleLink(undefined, true)} 
                   className="hover:text-[#D4AF37] transition-colors cursor-pointer text-left font-medium flex items-center gap-1.5"
@@ -125,7 +136,7 @@ export const Footer = ({ onOpenWorkModal, onNavigate }: FooterProps) => {
               onClick={onOpenWorkModal}
               className="w-full py-2.5 px-4 text-xs font-semibold text-white bg-[#9C7A4A] hover:bg-[#b08b56] rounded-md transition-colors cursor-pointer text-center"
             >
-              Work With Me
+              Partner with Baytify
             </button>
             <div className="flex items-center gap-2.5">
               <a
